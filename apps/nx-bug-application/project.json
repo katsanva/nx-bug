@@ -1,0 +1,70 @@
+{
+  "name": "nx-bug-application",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/nx-bug-application/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/apps/nx-bug-application",
+        "format": ["cjs"],
+        "bundle": false,
+        "main": "apps/nx-bug-application/src/main.ts",
+        "tsConfig": "apps/nx-bug-application/tsconfig.app.json",
+        "assets": ["apps/nx-bug-application/src/assets"],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "nx-bug-application:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "nx-bug-application:build:development"
+        },
+        "production": {
+          "buildTarget": "nx-bug-application:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/nx-bug-application/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/nx-bug-application/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}
